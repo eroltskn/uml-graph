@@ -24,12 +24,6 @@
                   width="auto"
               >
                 <template v-slot:activator="{ props }">
-<!--                  <v-btn-->
-<!--                      color="primary"-->
-<!--                      v-bind="props"-->
-<!--                  >-->
-<!--                    Open Dialog-->
-<!--                  </v-btn>-->
                   <v-btn
                       v-bind="props"
                   >
