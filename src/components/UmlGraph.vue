@@ -7,7 +7,7 @@
           <v-row style="margin-top: 20px">
             <v-col cols="4">
               <v-btn
-                  @click="addNode()"
+                  @click="exportDiagramTo()"
               >
                 Save
               </v-btn>
@@ -56,7 +56,7 @@
         </v-col>
         <v-col cols="9">
           <div id="UmlGraph" >
-            <ejs-diagram id="diagram"  :width='width' :height='height' :nodes='nodes' :connectors='connectors' ></ejs-diagram>
+            <ejs-diagram id="diagram" ref="diagramObject" :width='width' :height='height' :nodes='nodes' :connectors='connectors' ></ejs-diagram>
           </div>
         </v-col>
 
@@ -66,6 +66,10 @@
 </template>
 
 <script>
+// import {IExportOptions} from "@syncfusion/ej2-vue-diagrams";
+import {Diagram} from "@syncfusion/ej2-vue-diagrams";
+import FileSaver from "file-saver";
+
 export default {
   data () {
     return {
@@ -124,6 +128,13 @@ export default {
 
     },
 
+    exportDiagramTo(){
+      let diagramInstance = this.$refs.diagramObject.ej2Instances;
+      let saveData = diagramInstance.saveDiagram();
+      const data = JSON.stringify(saveData)
+      const blob = new Blob([JSON.stringify(data)], {type: "text/plain;charset=utf-8"});
+      FileSaver.saveAs(blob,'a.json')
+    },
     addEllipse(){
       let diagramObj = document.getElementById('diagram').ej2_instances[0];
 
@@ -225,7 +236,7 @@ export default {
     findLastConnectorId(diagramObj){
         let foundId = 0;
         let connectorsLength = diagramObj.connectors.length
-        debugger
+
         if ( connectorsLength> 0) {
           let connectorName = diagramObj.connectors[connectorsLength - 1].properties.id;
           foundId = Number(connectorName.split('_')[1]);
