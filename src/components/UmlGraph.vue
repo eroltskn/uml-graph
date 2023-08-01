@@ -128,13 +128,23 @@ export default {
 
     },
 
+    getNow() {
+      const today = new Date();
+      const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      return  date +' '+ time;
+    },
     exportDiagramTo(){
       let diagramInstance = this.$refs.diagramObject.ej2Instances;
       let saveData = diagramInstance.saveDiagram();
+
       const data = JSON.stringify(saveData)
       const blob = new Blob([JSON.stringify(data)], {type: "text/plain;charset=utf-8"});
-      FileSaver.saveAs(blob,'a.json')
+
+      const filename ='diagram_'+ this.getNow()+ '.json';
+      FileSaver.saveAs(blob,filename)
     },
+
     addEllipse(){
       let diagramObj = document.getElementById('diagram').ej2_instances[0];
 
