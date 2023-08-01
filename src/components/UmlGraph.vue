@@ -10,6 +10,9 @@
                   @click="exportDiagramTo()"
               >
                 Save
+                <v-icon>
+                  mdi-heart
+                </v-icon>
               </v-btn>
             </v-col>
             <v-col cols="4">
@@ -17,6 +20,9 @@
                   @click="addNode()"
               >
                 Load
+                <v-icon>
+                  mdi-upload
+                </v-icon>
               </v-btn>
             </v-col>
           </v-row>
@@ -29,6 +35,7 @@
                   @click="addTriangle()"
               >
                 Triangle
+                <v-icon>mdi-triangle</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="4">
@@ -36,6 +43,7 @@
                   @click="addRectangle()"
               >
                 Rectangle
+                <v-icon>mdi-rectangle</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="4">
@@ -43,6 +51,7 @@
                   @click="addEllipse()"
               >
                 Ellipse
+                <v-icon>mdi-ellipse</v-icon>
               </v-btn>
             </v-col>
             <v-col cols="4">
@@ -50,10 +59,12 @@
                   @click="addConnector()"
               >
                 Connector
+                <v-icon>mdi-vector-line</v-icon>
               </v-btn>
             </v-col>
           </v-row>
         </v-col>
+
         <v-col cols="9">
           <div id="UmlGraph" >
             <ejs-diagram id="diagram" ref="diagramObject" :width='width' :height='height' :nodes='nodes' :connectors='connectors' ></ejs-diagram>
@@ -66,8 +77,6 @@
 </template>
 
 <script>
-// import {IExportOptions} from "@syncfusion/ej2-vue-diagrams";
-import {Diagram} from "@syncfusion/ej2-vue-diagrams";
 import FileSaver from "file-saver";
 
 export default {
@@ -138,8 +147,7 @@ export default {
       let diagramInstance = this.$refs.diagramObject.ej2Instances;
       let saveData = diagramInstance.saveDiagram();
 
-      const data = JSON.stringify(saveData)
-      const blob = new Blob([JSON.stringify(data)], {type: "text/plain;charset=utf-8"});
+      const blob = new Blob([JSON.stringify(saveData)], {type: "text/plain;charset=utf-8"});
 
       const filename ='diagram_'+ this.getNow()+ '.json';
       FileSaver.saveAs(blob,filename)
