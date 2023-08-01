@@ -15,15 +15,59 @@
                 </v-icon>
               </v-btn>
             </v-col>
+
             <v-col cols="4">
-              <v-btn
-                  @click="addNode()"
+
+              <v-dialog
+                  v-model="dialog"
+                  persistent
+                  width="auto"
               >
-                Load
-                <v-icon>
-                  mdi-upload
-                </v-icon>
-              </v-btn>
+                <template v-slot:activator="{ props }">
+<!--                  <v-btn-->
+<!--                      color="primary"-->
+<!--                      v-bind="props"-->
+<!--                  >-->
+<!--                    Open Dialog-->
+<!--                  </v-btn>-->
+                  <v-btn
+                      v-bind="props"
+                  >
+                    Load
+                    <v-icon>
+                      mdi-upload
+                    </v-icon>
+                  </v-btn>
+
+                </template>
+                <v-card>
+                  <v-card-title class="text-h5">
+                    Upload File From Disk
+                  </v-card-title>
+                  <v-card-text>
+                    <input type="file" @change="onChangeFile" ref="file">
+
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="green-darken-1"
+                        variant="text"
+                        @click="dialog = false"
+                    >
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                        color="green-darken-1"
+                        variant="text"
+                        @click="loadDiagramFromFile"
+                    >
+                      Upload
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
             </v-col>
           </v-row>
           <v-divider :thickness="3" style="margin-top: 20px"></v-divider>
@@ -85,64 +129,30 @@ export default {
       width: "100%",
       height: "600px",
       nodes: [],
-      connectors: []
+      connectors: [],
+      dialog: false,
     }
   },
   methods:{
-    addNode(){
+    onChangeFile() {
+      const file = this.$refs.file.files[0];
+      if (file.name.includes(".json")) {
+            this.fileObj=file
+      }
+    },
+    loadDiagramFromFile() {
+      let reader = new FileReader();
+      reader.onload = e => {
+        let json = JSON.parse(e.target.result);
 
-      let diagramObj = document.getElementById('diagram').ej2_instances[0];
+        let diagram = this.$refs.diagramObject.ej2Instances;
+        diagram.loadDiagram(json);
 
-      diagramObj.add({
-        id: "node_1",
-        height: 100,
-        width: 100,
-        offsetX: 250,
-        offsetY: 300,
-      })
-
-      diagramObj.add({
-        id: "node_2",
-        height: 100,
-        width: 100,
-        offsetX: 450,
-        offsetY: 300,
-      })
-
-      diagramObj.add({
-        id: "connector_1",
-        style: {
-          strokeColor: '#6BA5D7',
-          fill: '#6BA5D7',
-          strokeWidth: 2
-        },
-        targetDecorator: {
-          style: {
-            fill: '#6BA5D7',
-            strokeColor: '#6BA5D7'
-          }
-        },
-        // Sets source and target points
-        sourcePoint: {
-          x: 100,
-          y: 100
-        },
-        targetPoint: {
-          x: 200,
-          y: 200
-        }
-        // sourceID: "node_1",
-        // targetID: "node_2"
-      })
-
+        this.dialog = false;
+      };
+      reader.readAsText(this.fileObj);
     },
 
-    getNow() {
-      const today = new Date();
-      const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-      const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      return  date +' '+ time;
-    },
     exportDiagramTo(){
       let diagramInstance = this.$refs.diagramObject.ej2Instances;
       let saveData = diagramInstance.saveDiagram();
@@ -268,7 +278,13 @@ export default {
     },
     generateNewConnectorId(last_id){
       return  "connector_"+String(last_id + 1)
-    }
+    },
+    getNow() {
+      const today = new Date();
+      const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      return  date +' '+ time;
+    },
 
   }
 }
