@@ -1,5 +1,5 @@
 # base
-
+In this project startup we are able to create Uml diagrams by using some representative components. We have utilized ej2(Syncfusion) to accomplish integrating different components to diagram. Vue framework has beeb used along with Veutify and Vite tools. At the bottom, you will be seeing the sample screen output of the diagram created with the components.
 ## Project setup
 
 ```
@@ -51,7 +51,19 @@ npm run lint
 # pnpm
 pnpm lint
 ```
+### Screenshots
+```
+# loading json file from computer
 
-### Customize configuration
+```
+![Screenshot](/docs/load.png)
 
-See [Configuration Reference](https://vitejs.dev/config/).
+
+```
+# Using all nodes and connectors with example annotations
+
+```
+![Screenshot](/docs/Uml-Diagram.png)
+
+
+
