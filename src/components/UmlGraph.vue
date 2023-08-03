@@ -94,6 +94,14 @@
             </v-col>
             <v-col cols="4">
               <v-btn
+                  @click="addFlowDocument()"
+              >
+                Flow Doc
+                <v-icon>mdi-current-ac</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col cols="4">
+              <v-btn
                   @click="addConnector()"
               >
                 Connector
@@ -172,6 +180,24 @@ export default {
         shape: {
           type: 'Basic',
           shape: 'Ellipse',
+        },
+      })
+    },
+    addFlowDocument(){
+      let diagramObj = document.getElementById('diagram').ej2_instances[0];
+
+      const last_id = this.findLastNodeId(diagramObj);
+      const generatedId =this.generateNewNodeId(last_id)
+
+      diagramObj.add({
+        id: generatedId,
+        height: 100,
+        width: 100,
+        offsetX: 650,
+        offsetY: 300,
+        shape: {
+          type: 'Flow',
+          shape: 'Document'
         },
       })
     },
