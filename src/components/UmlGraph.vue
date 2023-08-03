@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <v-container fluid="">
@@ -5,7 +6,7 @@
         <v-col cols="3">
           <h3>Tools</h3>
           <v-row style="margin-top: 20px">
-            <v-col cols="4">
+            <v-col md="4"  xs="12">
               <v-btn
                   @click="exportDiagramTo()"
               >
@@ -16,7 +17,7 @@
               </v-btn>
             </v-col>
 
-            <v-col cols="4">
+            <v-col md="4"  xs="12">
 
               <v-dialog
                   v-model="dialog"
@@ -68,7 +69,7 @@
 
           <h3>Generals</h3>
           <v-row style="margin-top: 20px">
-            <v-col cols="4">
+            <v-col md="4"  xs="12">
               <v-btn
                   @click="addTriangle()"
               >
@@ -76,7 +77,7 @@
                 <v-icon>mdi-triangle</v-icon>
               </v-btn>
             </v-col>
-            <v-col cols="4">
+            <v-col md="4"  xs="12">
               <v-btn
                   @click="addRectangle()"
               >
@@ -84,7 +85,7 @@
                 <v-icon>mdi-rectangle</v-icon>
               </v-btn>
             </v-col>
-            <v-col cols="4">
+            <v-col md="4"  xs="12">
               <v-btn
                   @click="addEllipse()"
               >
@@ -92,7 +93,7 @@
                 <v-icon>mdi-ellipse</v-icon>
               </v-btn>
             </v-col>
-            <v-col cols="4">
+            <v-col md="4"  xs="12">
               <v-btn
                   @click="addFlowDocument()"
               >
@@ -100,7 +101,7 @@
                 <v-icon>mdi-current-ac</v-icon>
               </v-btn>
             </v-col>
-            <v-col cols="4">
+            <v-col md="4"  xs="12">
               <v-btn
                   @click="addConnector()"
               >
@@ -139,7 +140,7 @@ export default {
     onChangeFile() {
       const file = this.$refs.file.files[0];
       if (file.name.includes(".json")) {
-            this.fileObj=file
+        this.fileObj=file
       }
     },
     loadDiagramFromFile() {
@@ -271,26 +272,26 @@ export default {
     },
 
     findLastNodeId(diagramObj){
-        let foundId = 0;
-        let nodesLength = diagramObj.nodes.length
+      let foundId = 0;
+      let nodesLength = diagramObj.nodes.length
 
-        if ( nodesLength> 0) {
-          let nodeName = diagramObj.nodes[nodesLength - 1].properties.id;
-          foundId = Number(nodeName.split('_')[1]);
-        }
+      if ( nodesLength> 0) {
+        let nodeName = diagramObj.nodes[nodesLength - 1].properties.id;
+        foundId = Number(nodeName.split('_')[1]);
+      }
 
-        return foundId
+      return foundId
     },
     findLastConnectorId(diagramObj){
-        let foundId = 0;
-        let connectorsLength = diagramObj.connectors.length
+      let foundId = 0;
+      let connectorsLength = diagramObj.connectors.length
 
-        if ( connectorsLength> 0) {
-          let connectorName = diagramObj.connectors[connectorsLength - 1].properties.id;
-          foundId = Number(connectorName.split('_')[1]);
-        }
+      if ( connectorsLength> 0) {
+        let connectorName = diagramObj.connectors[connectorsLength - 1].properties.id;
+        foundId = Number(connectorName.split('_')[1]);
+      }
 
-        return foundId
+      return foundId
     },
 
     generateNewNodeId(last_id){
