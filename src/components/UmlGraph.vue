@@ -3,6 +3,13 @@
   <div>
     <v-container fluid="">
       <v-row>
+        <v-progress-linear
+            color="amber"
+            :active="loading"
+            :indeterminate="loading"
+            rounded
+            height="6"
+        ></v-progress-linear>
         <v-col cols="3">
           <h3>Tools</h3>
           <v-row style="margin-top: 20px">
@@ -56,6 +63,7 @@
                         color="green-darken-1"
                         variant="text"
                         @click="loadDiagramFromFile"
+                        :disabled="fileObj===null"
                     >
                       Upload
                     </v-btn>
@@ -134,6 +142,8 @@ export default {
       nodes: [],
       connectors: [],
       dialog: false,
+      loading:false,
+      fileObj:null
     }
   },
   methods:{
@@ -141,30 +151,45 @@ export default {
       const file = this.$refs.file.files[0];
       if (file.name.includes(".json")) {
         this.fileObj=file
+      }else{
+        this.fileObj = null;
       }
     },
     loadDiagramFromFile() {
-      let reader = new FileReader();
-      reader.onload = e => {
-        let json = JSON.parse(e.target.result);
+      this.loading = true
+      setTimeout(() => {
+        let reader = new FileReader();
+        reader.onload = e => {
+          let json = JSON.parse(e.target.result);
 
-        let diagram = this.$refs.diagramObject.ej2Instances;
-        diagram.clear()
-        diagram.loadDiagram(json);
+          let diagram = this.$refs.diagramObject.ej2Instances;
+          diagram.clear()
+          diagram.loadDiagram(json);
 
-        this.dialog = false;
-      };
-      reader.readAsText(this.fileObj);
+          this.dialog = false;
+          this.loading = false;
+          this.fileObj = null;
+        };
+        reader.readAsText(this.fileObj);
+
+      }, 3000)
     },
 
     exportDiagramTo(){
-      let diagramInstance = this.$refs.diagramObject.ej2Instances;
-      let saveData = diagramInstance.saveDiagram();
+      this.loading = true
+      setTimeout(() => {
+        let diagramInstance = this.$refs.diagramObject.ej2Instances;
+        let saveData = diagramInstance.saveDiagram();
 
-      const blob = new Blob([JSON.stringify(saveData)], {type: "text/plain;charset=utf-8"});
+        const blob = new Blob([JSON.stringify(saveData)], {type: "text/plain;charset=utf-8"});
 
-      const filename ='diagram_'+ this.getNow()+ '.json';
-      FileSaver.saveAs(blob,filename)
+        const filename ='diagram_'+ this.getNow()+ '.json';
+        FileSaver.saveAs(blob,filename)
+        this.loading = false;
+
+      }, 3000)
+
+
     },
 
     addEllipse(){
