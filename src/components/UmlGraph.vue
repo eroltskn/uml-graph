@@ -149,6 +149,7 @@ export default {
         let json = JSON.parse(e.target.result);
 
         let diagram = this.$refs.diagramObject.ej2Instances;
+        diagram.clear()
         diagram.loadDiagram(json);
 
         this.dialog = false;
